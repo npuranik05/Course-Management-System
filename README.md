@@ -155,4 +155,4 @@ Centralizing sanitization and validation logic to protect against malformed inpu
 
 ---
 
-Built to demonstrate full-stack system design, secure web development, and real-world workflow modeling.
+Built with ❤️ during my third year of Software Engineering
