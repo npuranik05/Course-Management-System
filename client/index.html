@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script defer src="lab3.js"></script>
+    <link rel="stylesheet" href="styles.css">
+    <title>SE3316 - Lab 3</title>
+  </head>
+  <body>
+    <div class="container">
+      <h1>SE3316 - Lab 3</h1>
+      
+      <div class="navigation">
+        <button type="button" data-section="courses" id="nav-courses">Course Management</button>
+        <button type="button" data-section="sheets" id="nav-sheets">Sign-up Sheets</button>
+        <button type="button" data-section="grading" id="nav-grading">Grading</button>
+      </div>
+    </div>
+
+    <!-- Course Management Section -->
+    <div id="courses-section" class="section">
+      <!-- Course Operations Box -->
+      <div class="container">
+        <h2>Course Operations</h2>
+        
+        <!-- Create Course -->
+        <div class="form-group">
+          <h3>Create New Course</h3>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="termCode">Term Code:</label>
+              <input type="number" id="termCode" min="1" max="9999" placeholder="e.g., 1259" value="1259">
+            </div>
+            <div class="form-group">
+              <label for="courseName">Course Name:</label>
+              <input type="text" id="courseName" maxlength="100" placeholder="e.g., Software Engineering">
+            </div>
+            <div class="form-group">
+              <label for="courseSection">Section:</label>
+              <input type="number" id="courseSection" min="1" max="99" value="1">
+            </div>
+          </div>
+          <button type="button" id="createCourseButton">Create Course</button>
+        </div>
+
+        <!-- Delete Course -->
+        <div class="form-group">
+          <h3>Delete Course</h3>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="deleteTermCode">Term Code:</label>
+              <input type="number" id="deleteTermCode" min="1" max="9999">
+            </div>
+            <div class="form-group">
+              <label for="deleteSection">Section:</label>
+              <input type="number" id="deleteSection" min="1" max="99" value="1">
+            </div>
+          </div>
+          <button type="button" id="deleteCourseButton" class="delete">Delete Course</button>
+        </div>
+
+        <!-- Course List -->
+        <div class="form-group">
+          <h3>Course List</h3>
+          <button type="button" id="loadCoursesButton">Refresh Course List</button>
+          <table class="data-table" id="coursesTable">
+            <thead>
+              <tr>
+                <th>Term Code</th>
+                <th>Course Name</th>
+                <th>Section</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Member Management Box -->
+      <div class="container">
+        <h2>Member Management</h2>
+        
+        <!-- Add Member -->
+        <div class="form-group">
+          <h3>Add Member to Course</h3>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="memberTermCode">Term Code:</label>
+              <input type="number" id="memberTermCode" min="1" max="9999" value="1259">
+            </div>
+            <div class="form-group">
+              <label for="memberSection">Section:</label>
+              <input type="number" id="memberSection" min="1" max="99" value="1">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="memberId">Member ID (8 characters):</label>
+              <input type="text" id="memberId" maxlength="8" placeholder="12345678">
+            </div>
+            <div class="form-group">
+              <label for="firstName">First Name:</label>
+              <input type="text" id="firstName" maxlength="200" placeholder="John">
+            </div>
+            <div class="form-group">
+              <label for="lastName">Last Name:</label>
+              <input type="text" id="lastName" maxlength="200" placeholder="Doe">
+            </div>
+            <div class="form-group">
+              <label for="role">Role:</label>
+              <select id="role">
+                <option value="student">Student</option>
+                <option value="instructor">Instructor</option>
+                <option value="ta">TA</option>
+                <option value="grader">Grader</option>
+              </select>
+            </div>
+          </div>
+          <button type="button" id="addMemberButton">Add Member</button>
+        </div>
+
+        <!-- Members List -->
+        <div class="form-group">
+          <h3>Course Members</h3>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="viewTermCode">Term Code:</label>
+              <input type="number" id="viewTermCode" min="1" max="9999" value="1259">
+            </div>
+            <div class="form-group">
+              <label for="viewSection">Section:</label>
+              <input type="number" id="viewSection" min="1" max="99" value="1">
+            </div>
+            <div class="form-group">
+              <label for="viewRole">Role (optional):</label>
+              <input type="text" id="viewRole" placeholder="student, instructor, ta">
+            </div>
+          </div>
+          <button type="button" id="loadMembersButton">Load Members</button>
+          <table class="data-table" id="membersTable">
+            <thead>
+              <tr>
+                <th>Member ID</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Role</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+
+        <!-- Delete Members -->
+        <div class="form-group">
+          <h3>Delete Members</h3>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="deleteMembersTermCode">Term Code:</label>
+              <input type="number" id="deleteMembersTermCode" min="1" max="9999" value="1259">
+            </div>
+            <div class="form-group">
+              <label for="deleteMembersSection">Section:</label>
+              <input type="number" id="deleteMembersSection" min="1" max="99" value="1">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="deleteMemberIds">Member IDs to Delete (comma-separated):</label>
+            <input type="text" id="deleteMemberIds" placeholder="12345678, 87654321">
+          </div>
+          <button type="button" id="deleteMembersButton" class="delete">Delete Members</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sign-up Sheet Management Section -->
+    <div id="sheets-section" class="section hidden">
+      <!-- Sign-up Sheet Operations Box -->
+      <div class="container">
+        <h2>Sign-up Sheet Operations</h2>
+        
+        <!-- Create Sign-up Sheet -->
+        <div class="form-group">
+          <h3>Create Sign-up Sheet</h3>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="sheetTermCode">Term Code:</label>
+              <input type="number" id="sheetTermCode" min="1" max="9999">
+            </div>
+            <div class="form-group">
+              <label for="sheetSection">Section:</label>
+              <input type="number" id="sheetSection" min="1" max="99" value="1">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="assignmentName">Assignment Name:</label>
+            <input type="text" id="assignmentName" maxlength="100" placeholder="e.g., Midterm Exam">
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="notBefore">Not Before:</label>
+              <input type="datetime-local" id="notBefore">
+            </div>
+            <div class="form-group">
+              <label for="notAfter">Not After:</label>
+              <input type="datetime-local" id="notAfter">
+            </div>
+          </div>
+          <button type="button" id="createSignupButton">Create Sign-up Sheet</button>
+        </div>
+
+        <!-- Delete Sign-up Sheet -->
+        <div class="form-group">
+          <h3>Delete Sign-up Sheet</h3>
+          <div class="form-group">
+            <label for="deleteSheetId">Sign-up Sheet ID:</label>
+            <input type="number" id="deleteSheetId" min="1" placeholder="Enter sheet ID to delete">
+          </div>
+          <button type="button" id="deleteSignupByIdButton">Delete Sign-up Sheet</button>
+        </div>
+
+        <!-- Sign-up Sheets List -->
+        <div class="form-group">
+          <h3>Sign-up Sheets</h3>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="sheetsTermCode">Term Code:</label>
+              <input type="number" id="sheetsTermCode" min="1" max="9999">
+            </div>
+            <div class="form-group">
+              <label for="sheetsSection">Section:</label>
+              <input type="number" id="sheetsSection" min="1" max="99" value="1">
+            </div>
+          </div>
+          <button type="button" id="loadSignupSheetsButton">Load Sign-up Sheets</button>
+          <table class="data-table" id="sheetsTable">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Assignment Name</th>
+                <th>Not Before</th>
+                <th>Not After</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Slot Management Box -->
+      <div class="container">
+        <h2>Slot Management</h2>
+        
+        <!-- Add Slots -->
+        <div class="form-group">
+          <h3>Add Slots to Sign-up Sheet</h3>
+          <div class="form-group">
+            <label for="slotSignupSheetId">Sign-up Sheet ID:</label>
+            <input type="number" id="slotSignupSheetId">
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="slotStart">Start Time:</label>
+              <input type="datetime-local" id="slotStart">
+            </div>
+            <div class="form-group">
+              <label for="slotDuration">Duration (minutes):</label>
+              <input type="number" id="slotDuration" min="1" max="240" value="30">
+            </div>
+            <div class="form-group">
+              <label for="numSlots">Number of Slots:</label>
+              <input type="number" id="numSlots" min="1" max="99" value="1">
+            </div>
+            <div class="form-group">
+              <label for="maxMembers">Max Members per Slot:</label>
+              <input type="number" id="maxMembers" min="1" max="99" value="1">
+            </div>
+          </div>
+          <button type="button" id="addSlotsButton">Add Slots</button>
+        </div>
+
+        <!-- Slots Management -->
+        <div class="form-group">
+          <h3>Slots for Sign-up Sheet</h3>
+          <div class="form-group">
+            <label for="viewSheetId">Sign-up Sheet ID:</label>
+            <input type="number" id="viewSheetId">
+          </div>
+          <button type="button" id="loadSlotsButton">Load Slots</button>
+          <div id="slotsContainer"></div>
+        </div>
+
+        <!-- Modify Slot -->
+        <div class="form-group">
+          <h3>Modify Slot</h3>
+          <div class="form-group">
+            <label for="modifySlotId">Slot ID:</label>
+            <input type="number" id="modifySlotId" min="1" placeholder="Enter slot ID to modify">
+          </div>
+          <div class="form-group">
+            <label for="modifySlotStart">Start Time:</label>
+            <input type="datetime-local" id="modifySlotStart">
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="modifySlotDuration">Duration (minutes):</label>
+              <input type="number" id="modifySlotDuration" min="1" max="240" placeholder="1-240">
+            </div>
+            <div class="form-group">
+              <label for="modifySlotMaxMembers">Max Members:</label>
+              <input type="number" id="modifySlotMaxMembers" min="1" max="99" placeholder="1-99">
+            </div>
+          </div>
+          <button type="button" id="modifySlotButton">Modify Slot</button>
+          <p class="note-text">Note: Cannot modify slots with existing sign-ups</p>
+        </div>
+      </div>
+
+      <!-- Sign-up Operations Box -->
+      <div class="container">
+        <h2>Sign-up Operations</h2>
+        
+        <!-- Sign-up for Assignment -->
+        <div class="form-group">
+          <h3>Sign-up for Assignment</h3>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="signupSheetId">Sign-up Sheet ID:</label>
+              <input type="number" id="signupSheetId">
+            </div>
+            <div class="form-group">
+              <label for="signupSlotId">Slot ID:</label>
+              <input type="number" id="signupSlotId">
+            </div>
+            <div class="form-group">
+              <label for="signupMemberId">Member ID:</label>
+              <input type="text" id="signupMemberId" maxlength="8" placeholder="8 characters">
+            </div>
+          </div>
+          <button type="button" id="signupButton">Sign Up</button>
+        </div>
+
+        <!-- Remove Sign-up -->
+        <div class="form-group">
+          <h3>Remove Sign-up</h3>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="removeSignupSheetId">Sign-up Sheet ID:</label>
+              <input type="number" id="removeSignupSheetId">
+            </div>
+            <div class="form-group">
+              <label for="removeSignupMemberId">Member ID:</label>
+              <input type="text" id="removeSignupMemberId" maxlength="8" placeholder="8 characters">
+            </div>
+          </div>
+          <button type="button" id="removeSignupButton" class="delete">Remove Sign-up</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Grading Section -->
+    <div id="grading-section" class="section hidden">
+      <div class="container">
+        <h2>Grading Management</h2>
+        
+        <!-- View Slot Members -->
+        <div class="form-group">
+          <h3>View Slot Members</h3>
+          <div class="form-group">
+            <label for="gradeSlotId">Slot ID:</label>
+            <input type="number" id="gradeSlotId">
+          </div>
+          <button type="button" id="loadSlotMembersButton">Load Slot Members</button>
+          <div id="slotMembersContainer"></div>
+        </div>
+
+        <!-- Enter Grades -->
+        <div class="form-group">
+          <h3>Enter/Modify Grade</h3>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="gradeMemberId">Member ID:</label>
+              <input type="text" id="gradeMemberId" maxlength="8" placeholder="8 characters">
+            </div>
+            <div class="form-group">
+              <label for="gradeSignupSheetId">Sign-up Sheet ID:</label>
+              <input type="number" id="gradeSignupSheetId">
+            </div>
+            <div class="form-group">
+              <label for="grade">Grade (0-999):</label>
+              <input type="number" id="grade" min="0" max="999">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="gradeComment">Comment:</label>
+            <textarea id="gradeComment" rows="3" maxlength="500" placeholder="Optional comment"></textarea>
+          </div>
+          <button type="button" id="enterGradeButton">Enter/Update Grade</button>
+        </div>
+
+        <!-- View Grades -->
+        <div class="form-group">
+          <h3>View Grades</h3>
+          <div class="form-group">
+            <label for="viewGradesSheetId">Sign-up Sheet ID:</label>
+            <input type="number" id="viewGradesSheetId">
+          </div>
+          <button type="button" id="loadGradesButton">Load Grades</button>
+          <table class="data-table" id="gradesTable">
+            <thead>
+              <tr>
+                <th>Member ID</th>
+                <th>Grade</th>
+                <th>Comment</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div id="messageContainer"></div>
+  </body>
+</html>
